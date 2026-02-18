@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skitarii Rangers - Printable Tokens</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #f39c12;
+            font-size: 1.5rem;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #16213e;
+            border-radius: 8px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        select, input {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background: #0f0f23;
+            color: #fff;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #f39c12;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #e67e22;
+        }
+        
+        .print-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .token {
+            width: 2in;
+            height: 2in;
+            border-radius: 50%;
+            border: 3px solid #f39c12;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: #0a0a1a;
+            font-size: 0.65rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .token.alpha {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a0a 100%);
+        }
+        
+        .token.special {
+            border-color: #9b59b6;
+            background: linear-gradient(135deg, #0a0a1a 0%, #0a0a1a 100%);
+        }
+        
+        .token-name {
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: #f39c12;
+            margin-bottom: 2px;
+        }
+        
+        .token.alpha .token-name {
+            color: #e74c3c;
+        }
+        
+        .token.special .token-name {
+            color: #9b59b6;
+        }
+        
+        .token-weapon {
+            font-size: 0.6rem;
+            color: #3498db;
+        }
+        
+        .token-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            font-size: 0.55rem;
+            margin-top: 4px;
+            padding: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            width: 90%;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.45rem;
+        }
+        
+        .stat-value {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .token-ranged {
+            margin-top: 3px;
+            font-size: 0.5rem;
+            color: #2ecc71;
+            padding: 2px 6px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 3px;
+        }
+        
+        .token-abilities {
+            margin-top: 3px;
+            font-size: 0.45rem;
+            color: #888;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+            
+            .controls {
+                display: none;
+            }
+            
+            .print-area {
+                padding: 0;
+            }
+            
+            .token {
+                background: white;
+                border-color: #333;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .token.alpha {
+                border-color: #c0392b;
+            }
+            
+            .token.special {
+                border-color: #8e44ad;
+            }
+            
+            .token-name { color: #d35400; }
+            .token.alpha .token-name { color: #c0392b; }
+            .token.special .token-name { color: #8e44ad; }
+            .token-stats { background: #f0f0f0; }
+            .stat-value { color: #000; }
+            .token-ranged { background: #e8f8e8; }
+        }
+    </style>
+</head>
+<body>
+    <h1>⚡ Skitarii Rangers - Paper Tokens ⚡</h1>
+    
+    <div class="controls">
+        <div class="control-group">
+            <label>Unit Size</label>
+            <select id="unitSize">
+                <option value="5">5 Models (45 pts)</option>
+                <option value="10" selected>10 Models (85 pts)</option>
+                <option value="15">15 Models (125 pts)</option>
+                <option value="20">20 Models (165 pts)</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Special Weapons</label>
+            <select id="specialWeapons">
+                <option value="none">None (All Galvanic Rifles)</option>
+                <option value="arc">1 Arc Rifle</option>
+                <option value="plasma">1 Plasma Caliver</option>
+                <option value="arquebus">1 Transuranic Arquebus</option>
+                <option value="mixed">1 Arc + 1 Plasma</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Alpha Wargear</label>
+            <select id="alphaWeapon">
+                <option value="rifle">Galvanic Rifle</option>
+                <option value="pistol">Mechanicus Pistol + Combat Weapon</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Equipment</label>
+            <select id="equipment">
+                <option value="none">None</option>
+                <option value="tether">Enhanced Data-Tether</option>
+                <option value="omnispex">Omnispex</option>
+            </select>
+        </div>
+        
+        <div class="control-group" style="justify-content: flex-end;">
+            <button onclick="generateTokens()">Generate Tokens</button>
+        </div>
+        
+        <div class="control-group" style="justify-content: flex-end;">
+            <button onclick="window.print()">🖨️ Print</button>
+        </div>
+    </div>
+    
+    <div class="print-area" id="tokens"></div>
+    
+    <script>
+        // Skitarii Rangers data (10th Edition)
+        const unitData = {
+            name: "Skitarii Rangers",
+            keywords: ["INFANTRY", "BATTLELINE", "IMPERIUM", "SKITARII", "RANGERS"],
+            stats: { M: "6\"", T: "3", SV: "4+", W: "1", LD: "6+", OC: "1" },
+            abilities: ["Scouts 6\"", "Objective Scouted", "Doctrina Imperatives"],
+            
+            weapons: {
+                galvanicRifle: {
+                    name: "Galvanic Rifle",
+                    range: "30\"",
+                    attacks: "2",
+                    bs: "4+",
+                    s: "4",
+                    ap: "0",
+                    d: "1"
+                },
+                arcRifle: {
+                    name: "Arc Rifle",
+                    range: "30\"",
+                    attacks: "1",
+                    bs: "4+",
+                    s: "8",
+                    ap: "-1",
+                    d: "D3",
+                    special: "Anti-vehicle 4+, Devastating Wounds"
+                },
+                plasmaCaliver: {
+                    name: "Plasma Caliver",
+                    range: "30\"",
+                    attacks: "2",
+                    bs: "4+",
+                    s: "7/8",
+                    ap: "-2/-3",
+                    d: "1/2",
+                    special: "Supercharge (Hazardous)"
+                },
+                transuranicArquebus: {
+                    name: "Transuranic Arquebus",
+                    range: "36\"",
+                    attacks: "1",
+                    bs: "4+",
+                    s: "7",
+                    ap: "-2",
+                    d: "D3",
+                    special: "Heavy, Precision"
+                },
+                mechanicusPistol: {
+                    name: "Mechanicus Pistol",
+                    range: "12\"",
+                    attacks: "1",
+                    bs: "4+",
+                    s: "6",
+                    ap: "-1",
+                    d: "1",
+                    special: "Pistol, Devastating Wounds"
+                },
+                combatWeapon: {
+                    name: "Combat Weapon",
+                    range: "Melee",
+                    attacks: "1",
+                    ws: "4+",
+                    s: "3",
+                    ap: "0",
+                    d: "1"
+                },
+                alphaCombatWeapon: {
+                    name: "Alpha Combat Weapon",
+                    range: "Melee",
+                    attacks: "2",
+                    ws: "4+",
+                    s: "5",
+                    ap: "-1",
+                    d: "1"
+                }
+            }
+        };
+        
+        function createToken(isAlpha, weapon, special, equipment) {
+            const token = document.createElement('div');
+            token.className = 'token' + (isAlpha ? ' alpha' : '') + (special ? ' special' : '');
+            
+            let weaponData = unitData.weapons.galvanicRifle;
+            let meleeData = unitData.weapons.combatWeapon;
+            let weaponName = "Galvanic Rifle";
+            
+            if (special) {
+                if (special === 'arc') {
+                    weaponData = unitData.weapons.arcRifle;
+                    weaponName = "Arc Rifle";
+                } else if (special === 'plasma') {
+                    weaponData = unitData.weapons.plasmaCaliver;
+                    weaponName = "Plasma Caliver";
+                } else if (special === 'arquebus') {
+                    weaponData = unitData.weapons.transuranicArquebus;
+                    weaponName = "T. Arquebus";
+                }
+            }
+            
+            if (isAlpha) {
+                meleeData = unitData.weapons.alphaCombatWeapon;
+                if (weapon === 'pistol') {
+                    weaponData = unitData.weapons.mechanicusPistol;
+                    weaponName = "Pistol + Alpha CW";
+                } else {
+                    weaponName = "Galvanic Rifle";
+                }
+            }
+            
+            const rangedText = `${weaponData.range} | ${weaponData.attacks}A | ${weaponData.s}S | ${weaponData.ap}AP`;
+            
+            token.innerHTML = `
+                <div class="token-name">${isAlpha ? '⭐ Ranger Alpha' : 'Skitarii Ranger'}</div>
+                <div class="token-weapon">${weaponName}</div>
+                <div class="token-stats">
+                    <div class="stat"><span class="stat-label">M</span><span class="stat-value">${unitData.stats.M}</span></div>
+                    <div class="stat"><span class="stat-label">T</span><span class="stat-value">${unitData.stats.T}</span></div>
+                    <div class="stat"><span class="stat-label">SV</span><span class="stat-value">${unitData.stats.SV}</span></div>
+                    <div class="stat"><span class="stat-label">W</span><span class="stat-value">${unitData.stats.W}</span></div>
+                    <div class="stat"><span class="stat-label">LD</span><span class="stat-value">${unitData.stats.LD}</span></div>
+                    <div class="stat"><span class="stat-label">OC</span><span class="stat-value">${unitData.stats.OC}</span></div>
+                </div>
+                <div class="token-ranged">${rangedText}</div>
+                ${weaponData.special ? `<div class="token-abilities">${weaponData.special}</div>` : ''}
+                ${equipment ? `<div class="token-abilities">📦 ${equipment === 'tether' ? 'Data-Tether (+1CP on 5+)' : 'Omnispex (Ignores Cover)'}</div>` : ''}
+                <div class="token-abilities">Scouts 6" | Obj Scouted</div>
+            `;
+            
+            return token;
+        }
+        
+        function generateTokens() {
+            const container = document.getElementById('tokens');
+            container.innerHTML = '';
+            
+            const unitSize = parseInt(document.getElementById('unitSize').value);
+            const specialWeapons = document.getElementById('specialWeapons').value;
+            const alphaWeapon = document.getElementById('alphaWeapon').value;
+            const equipment = document.getElementById('equipment').value;
+            
+            // Generate Alpha
+            container.appendChild(createToken(true, alphaWeapon, null, null));
+            
+            // Track which models get special weapons
+            let specialAssigned = 0;
+            const specials = [];
+            
+            if (specialWeapons === 'arc') specials.push('arc');
+            else if (specialWeapons === 'plasma') specials.push('plasma');
+            else if (specialWeapons === 'arquebus') specials.push('arquebus');
+            else if (specialWeapons === 'mixed') {
+                specials.push('arc');
+                specials.push('plasma');
+            }
+            
+            // Generate Rangers
+            for (let i = 1; i < unitSize; i++) {
+                let special = null;
+                let hasEquipment = null;
+                
+                // Assign special weapon to first non-Alpha model(s)
+                if (specialAssigned < specials.length) {
+                    special = specials[specialAssigned];
+                    specialAssigned++;
+                }
+                
+                // Assign equipment to one model (can be combined with special)
+                if (equipment !== 'none' && i === 1) {
+                    hasEquipment = equipment;
+                }
+                
+                container.appendChild(createToken(false, null, special, hasEquipment));
+            }
+        }
+        
+        // Generate default tokens on load
+        generateTokens();
+    </script>
+</body>
+</html>
